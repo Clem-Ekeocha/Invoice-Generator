@@ -21,9 +21,20 @@ for filepath in filepaths:
 
     # Split the file name at the first occurence of '-' into 2 lists and extract the first member
     invoice_nr = filename.split('-')[0]
-    pdf.set_font(family='Times', size=16, style='B')
 
     # The extracted first member is used at the invoice number
-    pdf.cell(w=50, h=8, txt=f"Invoice nr.{invoice_nr}")
+    pdf.set_font(family='Times', size=16, style='B')
+    pdf.cell(w=50, h=8, txt=f"Invoice nr.{invoice_nr}", ln=1)
+
+    # After the split, the second member of the split is the date
+    date = filename.split('-')[1]
+
+    # The extracted second member is used at the date
+    pdf.set_font(family='Times', size=16, style='B')
+    pdf.cell(w=50, h=8, txt=f"Date nr.{date}")
+
+
+
+
     pdf.output(f"Pdf_Output/{filename}_output.pdf")
 
