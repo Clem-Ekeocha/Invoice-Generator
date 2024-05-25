@@ -31,9 +31,33 @@ for filepath in filepaths:
 
     # The extracted second member is used at the date
     pdf.set_font(family='Times', size=16, style='B')
-    pdf.cell(w=50, h=8, txt=f"Date nr.{date}")
+    pdf.cell(w=50, h=8, txt=f"Date nr.{date}", ln=1)
 
+    # Next: Read the table data into the pdf starting with the Headers.
+    df = pd.read_excel(filepath, sheet_name="Sheet 1")
 
+    column_headers = df.columns
+    column_headers = [item.replace("_", " ").title() for item in column_headers]
+
+    # Define the position and title headers of the table to be created in the pdf
+    pdf.set_font(family="Times", size=10, style='B')
+    pdf.set_text_color(80, 80, 80)
+    pdf.cell(w=30, h=8, txt=column_headers[0], border=1)
+    pdf.cell(w=60, h=8, txt=column_headers[1], border=1)
+    pdf.cell(w=40, h=8, txt=column_headers[2], border=1)
+    pdf.cell(w=30, h=8, txt=column_headers[3], border=1)
+    pdf.cell(w=30, h=8, txt=column_headers[4], border=1, ln=1)
+
+    # Read the excel file to add rows to created above the table
+    # by iterating over the rows of the table in the xlsx.
+    for index, row in df.iterrows():
+        pdf.set_font(family="Times", size=10)
+        pdf.set_text_color(80, 80, 80)
+        pdf.cell(w=30, h=8,txt=str(row["product_id"]), border=1)
+        pdf.cell(w=60, h=8,txt=str(row["product_name"]), border=1)
+        pdf.cell(w=40, h=8,txt=str(row["amount_purchased"]), border=1)
+        pdf.cell(w=30, h=8,txt=str(row["price_per_unit"]), border=1)
+        pdf.cell(w=30, h=8,txt=str(row["total_price"]), border=1, ln=1)
 
 
     pdf.output(f"Pdf_Output/{filename}_output.pdf")
